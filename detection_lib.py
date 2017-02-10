@@ -228,3 +228,4 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
     #8) Return windows for positive detections
     return on_windows
     
+#Implement the tricks
