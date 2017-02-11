@@ -1,4 +1,5 @@
 import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 from skimage.feature import hog
@@ -25,17 +26,19 @@ def get_hog_features(img, orient, pix_per_cell, cell_per_block,
 # Define a function to compute binned color features  
 def bin_spatial(img, size=(32, 32)):
     # Use cv2.resize().ravel() to create the feature vector
-    features = cv2.resize(img, size).ravel() 
+    features0 = cv2.resize(img[:,:,0], size).ravel()
+    features1 = cv2.resize(img[:,:,1], size).ravel()
+    features2 = cv2.resize(img[:,:,2], size).ravel() 
     # Return the feature vector
-    return features
+    return np.hstack((features0,features1,features2))
 
 # Define a function to compute color histogram features 
 # NEED TO CHANGE bins_range if reading .png files with mpimg!
-def color_hist(img, nbins=32, bins_range=(0, 256)):
+def color_hist(img, nbins=32):
     # Compute the histogram of the color channels separately
-    channel1_hist = np.histogram(img[:,:,0], bins=nbins, range=bins_range)
-    channel2_hist = np.histogram(img[:,:,1], bins=nbins, range=bins_range)
-    channel3_hist = np.histogram(img[:,:,2], bins=nbins, range=bins_range)
+    channel1_hist = np.histogram(img[:,:,0], bins=nbins)
+    channel2_hist = np.histogram(img[:,:,1], bins=nbins)
+    channel3_hist = np.histogram(img[:,:,2], bins=nbins)
     # Concatenate the histograms into a single feature vector
     hist_features = np.concatenate((channel1_hist[0], channel2_hist[0], channel3_hist[0]))
     # Return the individual histograms, bin_centers and feature vector
@@ -153,7 +156,7 @@ def draw_boxes(img, bboxes, color=(0, 0, 255), thick=6):
 def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                         hist_bins=32, orient=9, 
                         pix_per_cell=8, cell_per_block=2, hog_channel=0,
-                        spatial_feat=True, hist_feat=True, hog_feat=True):    
+                        spatial_feat=True, hist_feat=True, hog_feat=True, vis=False):    
     #1) Define an empty list to receive features
     img_features = []
     #2) Apply color conversion if other than 'RGB'
@@ -188,13 +191,20 @@ def single_img_features(img, color_space='RGB', spatial_size=(32, 32),
                                     orient, pix_per_cell, cell_per_block, 
                                     vis=False, feature_vec=True))      
         else:
-            hog_features = get_hog_features(feature_image[:,:,hog_channel], orient, 
-                        pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+            if vis==True:
+                hog_features, hog_image = get_hog_features(feature_image[:,:,hog_channel], orient, 
+                            pix_per_cell, cell_per_block, vis=True, feature_vec=True)
+            else:
+                hog_features = get_hog_features(feature_image[:,:,hog_channel], orient, 
+                            pix_per_cell, cell_per_block, vis=True, feature_vec=True)
         #8) Append features to list
         img_features.append(hog_features)
 
     #9) Return concatenated array of features
-    return np.concatenate(img_features)
+    if vis==True:
+        return np.concatenate(img_features), hog_image
+    else:
+        return np.concatenate(img_features)
 
 # Define a function you will pass an image 
 # and the list of windows to be searched (output of slide_windows())
@@ -227,5 +237,24 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
             on_windows.append(window)
     #8) Return windows for positive detections
     return on_windows
-    
+
+#define a function for plotting multipe images
+def visualize(fig, rows, cols, imgs, titles):
+    for i, img in enumerate(imgs):
+        plt.subplot(rows, cols, i+1)
+        plt.title(i+1)
+        img_dims = len(img.shape)
+        if img_dims < 3:
+            plt.imshow(img, cmap='hot')
+            plt.title(titles[i])
+        else:
+            plt.imshow(img)
+            plt.title(titles[i])
+             
+
+def hog_visualize(fig, rows, cols, imgs, titles):
+    for i, img in enumerate(imgs):
+        plt.subplot(rows, cols, i+1)
+        plt.imshow(img, cmap='gray')
+        plt.title(titles[i])
 #Implement the tricks
