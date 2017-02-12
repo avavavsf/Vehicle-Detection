@@ -4,6 +4,23 @@ import numpy as np
 import cv2
 from skimage.feature import hog
 from scipy.ndimage.measurements import label
+
+class Vehicle():
+    def __int__(self):
+        self.detected = False
+        self.n_detected = 0 #number of times have been detected
+        self.non_detected = 0
+        self.xpixels = None # pix x value of last detected
+        self.ypixels = None
+        self.recent_xfitted = [] # x posotion of the last n fits of bbox
+        self.bestx = None
+        self.recent_yfitted = [] # y posotion of the last n fits of bbox
+        self.besty = None
+        self.recent_wfitted = [] # width of the last n fits of bbox
+        self.bestw = None
+        self.recent_hfitted = [] # height of the last n fits of bbox
+        self.besth = None
+
 # Define a function to return HOG features and visualization
 def get_hog_features(img, orient, pix_per_cell, cell_per_block, 
                         vis=False, feature_vec=True):
