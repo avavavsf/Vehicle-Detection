@@ -1,7 +1,5 @@
 ##Vehicle Detection Project Report
 
----
-
 **Vehicle Detection Project**
 
 The goals / steps of this project are the following:
@@ -18,7 +16,6 @@ The goals / steps of this project are the following:
 [image2]: ./output_images/detected_car.png
 [image3]: ./output_images/detected_car_heatmap.png
 
-## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
 ###Here I will consider the [Rubric Points](https://review.udacity.com/#!/rubrics/513/view) individually and describe how I addressed each point in my implementation.  
 
 ---
