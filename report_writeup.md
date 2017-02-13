@@ -46,11 +46,8 @@ First I extract the HOG features with the color space and parameters described a
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-First of all, I only apply the sliding window on the bottom half of the image because the vehicles will not show above the road surface. I tried different window size (search scale) and overlap rate, and found that window size 96 and overlap 0.5 works well. 
+First of all, I only apply the sliding window on the bottom half of the image because the vehicles will not show above the road surface. I tried different window size (search scale) and overlap rate, and found that window size 96 and overlap 0.5 works well. You can see how it works in the next figure.
 
-Here is the results on the test image.
-
-![alt text][image2]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -58,7 +55,7 @@ I test on different combination of the following three kind of features: YCrCb A
 
 Here are some example images:
 
-![alt text][image3]
+![alt text][image2]
 
 ---
 
@@ -76,6 +73,10 @@ Here's a link to my video result.
 The code for this step is contained in lines 353 through 369 of the file called `detection_lib.py`.
 
 I recorded the positions of the positive detected cars from the trained classifer in each frame of the video. Then a heat map is created a heatmap from the positive detection, by summing up and recorded the heatmap of 10 sequential frame and apply a threshold of 5, I get a new heat map which is based on the detection of last 10 frame. I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  we assumed each blob corresponded to a vehicle, and finally we draw bounding boxes to cover the area of each blob detected.  
+
+Here are some example output images(we did not apply the threshold on the heatmap because they are all signle frame):
+
+![alt text][image3]
 
 ---
 
