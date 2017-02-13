@@ -58,7 +58,7 @@ I test on different combination of the following three kind of features: YCrCb A
 
 Here are some example images:
 
-![alt text][image2]
+![alt text][image3]
 
 ---
 
