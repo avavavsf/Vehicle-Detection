@@ -5,22 +5,6 @@ import cv2
 from skimage.feature import hog
 from scipy.ndimage.measurements import label
 
-class Vehicle():
-    def __int__(self):
-        self.detected = False
-        self.n_detected = 0 # number of times have been detected
-        self.n_non_detected = 0 # number of continous times have not been detected
-        self.xpixels = None # pix x values of last detected
-        self.ypixels = None # average pix x value of last detected
-        self.recent_xfitted = [] # x posotion of the last n fits of bbox
-        self.bestx = None
-        self.recent_yfitted = [] # y posotion of the last n fits of bbox
-        self.besty = None
-        self.recent_wfitted = [] # width of the last n fits of bbox
-        self.bestw = None
-        self.recent_hfitted = [] # height of the last n fits of bbox
-        self.besth = None
-
 # Define a function to return HOG features and visualization
 def get_hog_features(img, orient, pix_per_cell, cell_per_block, 
                         vis=False, feature_vec=True):
@@ -366,10 +350,29 @@ def draw_labeled_bboxes(img,labels):
         cv2.rectangle(img,bbox[0],bbox[1],(0,0,255),6)
     return img  
 
-def process_image(img):
-    out_img, heat_map = find_cars(img, scale)
-    labels = label(heat_map)
-    #draw bounding box on a copy of the image
-    draw_img = draw_labeled_bboxes(np.copy(img),labels)
-    return draw_img    
-#Implement the tricks
+class Image():
+    def __init__(self):
+        self.sumheat_map = []
+        
+    def process_image(self,img):
+        scale = 1.5
+        out_img, heat_map = find_cars(img, scale)
+        self.sumheat_map.append(heat_map)
+        if len(self.sumheat_map) > 10:
+            self.sumheat_map.pop(0)
+        #heat_map = pre_heat_map * 0.8 + heat_map * 0.2
+        heat_map = apply_threshold(sum(self.sumheat_map), 5)
+        labels = label(heat_map)
+        #draw bounding box on a copy of the image
+        draw_img = draw_labeled_bboxes(np.copy(img),labels)
+        #pre_heat_map = heat_map
+        return draw_img    
+
+
+
+
+
+
+
+
+
