@@ -8,10 +8,10 @@ from scipy.ndimage.measurements import label
 class Vehicle():
     def __int__(self):
         self.detected = False
-        self.n_detected = 0 #number of times have been detected
-        self.non_detected = 0
-        self.xpixels = None # pix x value of last detected
-        self.ypixels = None
+        self.n_detected = 0 # number of times have been detected
+        self.n_non_detected = 0 # number of continous times have not been detected
+        self.xpixels = None # pix x values of last detected
+        self.ypixels = None # average pix x value of last detected
         self.recent_xfitted = [] # x posotion of the last n fits of bbox
         self.bestx = None
         self.recent_yfitted = [] # y posotion of the last n fits of bbox
