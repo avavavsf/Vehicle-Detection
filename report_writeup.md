@@ -34,11 +34,12 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of `skimage.hog()` parameters and color space, and found that HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)` with `YCrCb` color space seems that best. And it turns out works well in the following task.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+The code for this step is contained in 5th cell of the file called `vehicle_detection.ipynb`.  
+First I extract the HOG features with the color space and parameters described above, combined with spatially binned color and histograms of color. Then I stack these features into a single numpy array in the order of spatiall binned color, color histogram and HOG features. After that, I split up data into randomized training and test sets with sklearn `train_test_split` function to suffle the data and aviod overfitting. Finally I train a linear SVM classifier on the trainning datasets, and test on the test datasets with a 99.19% accuracy.
 
 ###Sliding Window Search
 
