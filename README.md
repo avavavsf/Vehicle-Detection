@@ -2,7 +2,7 @@
 
 ### Goal and results
 In this project, the goal is to write a software pipeline to detect vehicles in a video, and you can view the final output from the following video.<br>
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/Epqb7tTIe6s/0.jpg)](https://youtu.be/Epqb7tTIe6s "a small networkd ")
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/DF7vj5NXV_Y/0.jpg)](https://youtu.be/DF7vj5NXV_Y "a small networkd ")
 
 The detailed steps of this project are the following:
 
